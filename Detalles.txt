@@ -1,0 +1,10 @@
+Detalles del proyecto Artículos Coppel
+
+Lenguaje: Java 21
+Framework: Spring 3.4.0
+Gestor de dependencias: Maven
+
+Dependencias 
+-Spring Web
+-JDBC
+
