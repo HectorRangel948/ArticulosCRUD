@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import AgregarArticulo from "./AgregarArticulo";
 import ListarArticulos from './ListarArticulos';
-import EliminarArticulo from './EliminarArticulo';
+import BuscarArticulo from './BuscarArticulo';
 
 const Articulos = ()=>{
 
@@ -21,14 +21,16 @@ const Articulos = ()=>{
             <input name="opcion" id="listarArticulos" value="listarArticulos" type="radio" onChange={opcionOnChange}></input>
             <label className="opcionLabel" htmlFor="listarArticulos">Listar articulos</label>
         </div>
+
         <div className="opcionContenedor">
-            <input name="opcion" id="eliminarArticulo" value="eliminarArticulo" type="radio" onChange={opcionOnChange}></input>
-            <label className="opcionLabel" htmlFor="eliminarArticulo">Eliminar articulo</label>
+            <input name="opcion" id="buscarArticulo" value="buscarArticulo" type="radio" onChange={opcionOnChange}></input>
+            <label className="opcionLabel" htmlFor="buscarArticulo">Buscar articulo por SKU</label>
         </div>
+
         <div className="seleccion">
             {opcion=="agregarArticulo" ? <AgregarArticulo/> : <></>}
             {opcion=="listarArticulos" ? <ListarArticulos/> : <></>}
-            {opcion=="eliminarArticulo" ? <EliminarArticulo/> : <></>}
+            {opcion=="buscarArticulo" ? <BuscarArticulo/> : <></>}
         </div>
     </>)
 }

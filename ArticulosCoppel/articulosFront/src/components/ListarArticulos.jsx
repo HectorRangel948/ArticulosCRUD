@@ -1,4 +1,5 @@
 import {useEffect, useState} from 'react'
+import ModificarArticulo from './ModificarArticulo';
 
 const ListarArticulos = ()=>{
 
@@ -40,21 +41,71 @@ const ListarArticulos = ()=>{
             pedirArticulos();
           }, []);
 
+        const [articuloEliminar, setArticuloEliminar] = useState({ id: '' });
+
+
+        const EliminarArticulo = async (id) => {
+        
+                try {
+                    const response = await fetch(`http://localhost:8080/articulos/articulo/${id}`, {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+                    if (response.ok) {
+                        alert("Artículo eliminado exitosamente");
+                        setArticuloEliminar({ id: '' }); // Limpia el formulario
+                    } else {
+                        alert("No se pudo eliminar el artículo");
+                    }
+                } catch (error) {
+                    alert("Hubo un problema con la conexión");
+                }
+    }
+
+    const [editar, setEditar] = useState(false);
+
+    const [articuloAModificar, setArticuloAModificar] = useState({});
+
+    const Editar =(articulo)=>{
+        setEditar(true);
+        setArticuloAModificar(articulo);
+    }
+
 
     return (<>
     <div className="contenedorAgregarArticulo">
         <h2 className="subtitulo">Listar Articulos</h2>
 
         <div className="articulos">
-           <ul>
+           <table>
+            <th>ID</th>
+            <th>SKU</th>
+            <th>Nombre</th>
+            <th>Marca</th>
+            <th>Cantidad</th>
+            <th>Fecha de creación</th>
+            <th>Eliminar</th>
+            <th>Editar</th>
+
             {articulos.map((articulo) => (
-            <li key={articulo.id}>
-             {articulo.id} - {articulo.sku} - {articulo.nombre} - {articulo.marca} - {articulo.cantidad} - {articulo.fechaCreacion}
-            </li>
+            <tr key={articulo.id}>
+                <td>{articulo.id} </td>
+                <td>{articulo.sku} </td>
+                <td>{articulo.nombre} </td>
+                <td>{articulo.marca} </td>
+                <td>{articulo.cantidad} </td>
+                <td>{articulo.fechaCreacion} </td>
+                <td><button value={articulo.id} onClick={(e)=>EliminarArticulo(e.target.value)}>Eliminar</button></td>
+                <td><button onClick={()=>Editar(articulo)}>Editar</button></td>
+            </tr>
           ))}
-           </ul>
+           </table>
         </div>
         </div>
+
+        {editar == true ? <ModificarArticulo articulo={articuloAModificar}/> : <></>}
     </>)
 }
 

@@ -45,6 +45,36 @@ public class ArticuloService {
 
         return articulos;
     }
+
+    public Articulo buscarArticulo(String sku){
+        Articulo articulo = new Articulo();
+        Connection con = Conexion.getConnection();
+        PreparedStatement ps;
+        ResultSet rs;
+
+        String sql = "SELECT * FROM articulos WHERE sku = ?";
+
+        try{
+            ps = con.prepareStatement(sql);
+            ps.setString(1, sku);
+            rs = ps.executeQuery();
+            while(rs.next()){
+                articulo.setId(rs.getLong("id"));
+                articulo.setSku(rs.getString("sku"));
+                articulo.setNombre(rs.getString("nombre"));
+                articulo.setMarca(rs.getString("marca"));
+                articulo.setCantidad(rs.getInt("cantidad"));
+                articulo.setFechaCreacion(rs.getDate("fecha_creacion"));
+            }
+
+        }catch(Exception e){
+            System.out.println(e);
+        }finally{
+            try{con.close();}catch(Exception e){
+                System.out.println(e);}
+        }
+        return articulo;
+    }
     public boolean  crearArticulo(Articulo articulo){
         Articulo nuevoArticulo = articulo;
         PreparedStatement ps;

@@ -24,6 +24,7 @@ public class ArticuloController {
         return articuloService.listarArticulos();
     }
 
+
     @PostMapping("articulo")
     public ResponseEntity<Boolean> agregarArticulo(@RequestBody Articulo articulo){
         boolean response = articuloService.crearArticulo(articulo);
@@ -33,6 +34,17 @@ public class ArticuloController {
     @PutMapping("articulo")
     public boolean modificarArticulo(@RequestBody Articulo articulo){
         return articuloService.modificarArticulo(articulo);
+    }
+
+    @GetMapping("/articulo/{sku}")
+    public Articulo buscarArticulo(@PathVariable String sku){
+        Articulo articulo = new Articulo();
+        try{
+            articulo = articuloService.buscarArticulo(sku);
+        }catch(Exception e){
+            System.out.println(e);}
+
+        return articulo;
     }
 
     @DeleteMapping("/articulo/{id}")

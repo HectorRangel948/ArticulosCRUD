@@ -1,23 +1,16 @@
-import {useState} from 'react';
+import { useEffect, useState } from "react"
 
-const AgregarArticulo =()=>{
+const ModificarArticulo =(art)=>{
     const fecha = new Date().toISOString().split("T")[0]; //Formatea la fecha yyyy-mm-dd
 
     //Objeto que almacena los datos de los inputs para la creación del artículo
-    const [articulo, setArticulo] = useState({
-        sku:'',
-        nombre:'',
-        marca:'',
-        cantidad:'',
-        fechaCreacion: ''
-    });
+    const [articulo, setArticulo] = useState(art.articulo);
 
     //Variables que registran los cambios en los inputs
-    const {sku,nombre,marca,cantidad,fechaCreacion} = articulo;
+    const {id,sku,nombre,marca,cantidad,fechaCreacion} = articulo;
 
     //Función que administra el almacenamiento de los valores de cada variable hacia el objeto articulo
     const inputChange =({target:{name,value}})=>{
-      
         setArticulo({
             ...articulo, 
             [name]:value,
@@ -26,11 +19,11 @@ const AgregarArticulo =()=>{
     }
 
     //Función que se encarga de hacer la conexión con la API para almacenar el objeto articulo
-    const crearArticulo =async ()=>{
+    const modificarArticulo =async ()=>{
         try{
             await fetch('http://localhost:8080/articulos/articulo',
                 {
-                    method: 'POST',
+                    method: 'PUT',
                     headers: {
                         'Content-Type':'application/json'
                     },
@@ -38,13 +31,14 @@ const AgregarArticulo =()=>{
                 })
                 .then(response => response.json())
                 .then(
-                    data => {if(data){alert("Artículo agregado exitosamente");} else {alert("No se pudo agregar el articulo");}})
+                    data => {if(data){alert("Artículo modificado exitosamente");} else {alert("No se pudo modificar el articulo");}})
                 }catch(Error){
                     alert("Hubo un problema con la conexión");
                 }
 
                 //Limpia el formulario sin recargar la página
                 setArticulo({
+                    id:'',
                     sku:'',
                     nombre:'',
                     marca:'',
@@ -54,8 +48,7 @@ const AgregarArticulo =()=>{
         }
 
     return (<>
-
-        <div className="contenedorAgregarArticulo">
+     <div className="contenedorAgregarArticulo">
             <h2 className="subtitulo">Agregar artículo</h2>
             <form>
                 <label htmlFor="sku">SKU</label>
@@ -70,13 +63,11 @@ const AgregarArticulo =()=>{
                 <label htmlFor="cantidad">Cantidad</label>
                 <input type="number" id="cantidad" name="cantidad" onChange={inputChange} value={cantidad}></input>
 
-                <div className="boton" onClick={crearArticulo}>Agregar</div>
+                <div className="boton" onClick={modificarArticulo}>Modificar</div>
 
             </form>
-            
         </div>
     </>)
 }
 
-
-export default AgregarArticulo;
+export default ModificarArticulo
